@@ -36,8 +36,8 @@ BerriWell aims to change this by centralizing data, lab results, and naturopathi
 
 ### Tech Stack
 
-front-end: react
-back-end: express + mysql
+- front-end: react
+- back-end: express + mysql
 
 ### APIs
 
@@ -64,11 +64,11 @@ Provide visuals of your app's screens. You can use pictures of hand-drawn sketch
 
 ### Endpoints
 
-POST /journal:id 
-POST /journal
-GET /journal
-GET /food
-POST /food
+- POST /journal:id 
+- POST /journal
+- GET /journal
+- GET /food
+- POST /food
 
 
 ### Roadmap
