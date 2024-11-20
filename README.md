@@ -16,13 +16,13 @@ BerriWell aims to change this by centralizing data, lab results, and naturopathi
 ### User Profile
 
 **Naturopathic patients:**
-    - with gut issues
-    - who want to keep their health data in one place
-    - who want to track their data over time
+- with gut issues
+- who want to keep their health data in one place
+- who want to track their data over time
 
 **Naturopaths** *(future implementation)*
-    - to create health plans for patients
-    - to add patient data
+- to create health plans for patients
+- to add patient data
 
 ### Features
 
