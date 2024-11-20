@@ -15,7 +15,7 @@ BerriWell aims to change this by centralizing data, lab results, and naturopathi
 
 ### User Profile
 
-**- Naturopathic patients:**
+**Naturopathic patients:**
     - with gut issues
     - who want to keep their health data in one place
     - who want to track their data over time
@@ -77,6 +77,7 @@ I'm not planning on using any external APIs but will be uploading my own data to
 3. health plan
 - list of tasks/vitamins to take (user will input the list)
 
+Relationships:
 - Each user can have multiple symptom journal entries, food sensitivities, and a health plan: this is a one-to-many relationship between Users and Symptom_Journal and between Users and Food_Sensitivities.
 - Each user has one health plan: this is a one-to-one relationship between Users and Health_Plan.
 
