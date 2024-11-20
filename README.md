@@ -26,11 +26,10 @@ BerriWell aims to change this by centralizing data, lab results, and naturopathi
 
 ### Features
 
-- food sensitivity results
-- symptom journal
-- appointment reminder
-- health plan (maybe)
-
+- Food Sensitivity Results: Easily add, edit, and view your food sensitivities at your convenience.
+- Symptom Journal: Log any pain or unfavorable symptoms you experience in a journal to share with your doctor during appointments.
+- Appointment Reminder: Keep track of your upcoming appointments to stay organized.
+- Health Plan: Add, edit, and view a personalized health plan tailored to your needs.
 
 ## Implementation
 
