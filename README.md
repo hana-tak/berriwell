@@ -1,4 +1,4 @@
-# Project Title
+# BerriWell
 
 ## Overview
 
@@ -15,12 +15,12 @@ BerriWell aims to change this by centralizing data, lab results, and naturopathi
 
 ### User Profile
 
-- Naturopathic patients:
+**- Naturopathic patients:**
     - with gut issues
     - who want to keep their health data in one place
     - who want to track their data over time
 
-- Naturopaths: (future implementation)
+**Naturopaths** *(future implementation)*
     - to create health plans for patients
     - to add patient data
 
@@ -35,17 +35,17 @@ BerriWell aims to change this by centralizing data, lab results, and naturopathi
 
 ### Tech Stack
 
-Front-end:
-- React
+**Front-end:**
+- Framework: React
 - Client libraries: 
     - react
     - react-router
     - axios
     - sass
 
-Back-end:
-- MySQL
-- Express
+**Back-end:**
+- Database: MySQL
+- Framework: Express
 - Server libraries:
     - knex
     - express
@@ -228,10 +228,24 @@ I'm not planning on using any external APIs but will be uploading my own data to
 ## Future Implementations
 
 - calendar
-- appointment reminder
 - analytics dashboard
 - login authentication
 - user profile
 - messaging system
 - blog posts (eg. IgE vs IgG)
 - hormone balancing tab
+- react native implementation for iOS and Andriod users
+
+
+
+- think about how i would structure data eg. brainflix had a massive file in a get request, the get request already got so much so that you can filter down (ie. instead of having 3 GET requests just have 1)
+- work from the most high level to most detailed pages
+- start with App.jsx then work down in specificity 
+- we want to create reuseable components instead of having all these separate complicated pages
+- url parameter determines what we're going to see --> not necessarily creating a separate url/get request for each
+- when loading a user's profile, we should be able to see everything 
+- eg. patient 1: kv pair name, id, food lists, journal entries, health plan, appointment reminders. /response/data/food-list/food-name
+- conditional rendering vs having a ton of pages
+- hone in on the user profile
+- try to group together endpoints 
+- single source of truth
