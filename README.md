@@ -20,7 +20,7 @@ BerriWell aims to change this by centralizing data, lab results, and naturopathi
 - who want to keep their health data in one place
 - who want to track their data over time
 
-**Naturopaths** *(future implementation)*
+**Naturopaths** *(future implementation)*:
 - to create health plans for patients
 - to add patient data
 
