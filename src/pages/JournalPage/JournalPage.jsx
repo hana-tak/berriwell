@@ -5,7 +5,6 @@ import "./JournalPage.scss"
 const JournalPage = () => {
   return (
     <div className="journal-page">
-      <h2>Symptom Journal</h2>
       <SymptomJournal />
     </div>
   );

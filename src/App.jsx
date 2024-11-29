@@ -1,5 +1,5 @@
-import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import React, { useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.scss";
 
 import HomePage from "./pages/HomePage/HomePage";
@@ -10,6 +10,13 @@ import Header from "./components/Header/Header";
 import MenuBar from "./components/MenuBar/MenuBar";
 
 const App = () => {
+  useEffect(() => {
+    const defaultUserId = '1';
+    if (!localStorage.getItem('user_id')) {
+      localStorage.setItem('user_id', defaultUserId);
+    }
+  }, []);
+
   return (
     <Router>
       <Header />

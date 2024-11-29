@@ -1,3 +1,29 @@
 @use "/src/styles/partials/variables" as *;
 @use "/src/styles/partials/mixins" as *;
 @use "/src/styles/partials/global" as *;
+
+.appointment-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.appointment-actions button {
+  background-color: cornflowerblue;
+  color: white;
+  border: none;
+  padding: 0.5rem;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.appointment-actions button:hover {
+  background-color: cornflowerblue;
+}
+
+.appointment-actions button:nth-child(2) {
+  background-color: mediumpurple;
+}
+
+.appointment-actions button:nth-child(2):hover {
+  background-color: mediumpurple;
+}

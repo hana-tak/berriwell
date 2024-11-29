@@ -5,7 +5,6 @@ import "./FoodPage.scss"
 const FoodPage = () => {
   return (
     <div className="food-page">
-      <h2>Food Sensitivities</h2>
       <FoodInsensitivities />
     </div>
   );
