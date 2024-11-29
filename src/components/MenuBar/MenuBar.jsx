@@ -1,6 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import "./MenuBar.scss"; // Styling for the menu bar
+import "./MenuBar.scss";
 
 const MenuBar = () => {
   return (

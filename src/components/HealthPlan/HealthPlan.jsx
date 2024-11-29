@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Modal from "react-modal";
 import axios from "axios";
+import './HealthPlan.scss';
 
 Modal.setAppElement("#root");
 
