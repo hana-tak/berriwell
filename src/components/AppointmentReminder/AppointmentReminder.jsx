@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from "react";
+import Modal from "react-modal";
 import axios from "axios";
+import "./AppointmentReminder.scss"
+
+Modal.setAppElement("#root");
 
 const AppointmentReminder = () => {
   const apiUrl = import.meta.env.VITE_API_URL;
   const userId = localStorage.getItem("user_id");
   const [appointments, setAppointments] = useState([]);
-  const [showForm, setShowForm] = useState(false);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [modalType, setModalType] = useState("");
   const [formData, setFormData] = useState({
     date: "",
     time: "",
@@ -15,10 +20,23 @@ const AppointmentReminder = () => {
   const [editId, setEditId] = useState(null);
   const [loadingSubmit, setLoadingSubmit] = useState(false);
   const [loadingDelete, setLoadingDelete] = useState(false);
+
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-    return date.toISOString().split('T')[0];
+    return date.toISOString().split("T")[0];
   };
+
+  useEffect(() => {
+    if (modalIsOpen) {
+      document.body.classList.add("modal-open");
+    } else {
+      document.body.classList.remove("modal-open");
+    }
+
+    return () => {
+      document.body.classList.remove("modal-open");
+    };
+  }, [modalIsOpen]);
 
   useEffect(() => {
     const fetchAppointments = async () => {
@@ -33,83 +51,47 @@ const AppointmentReminder = () => {
     fetchAppointments();
   }, [userId, apiUrl]);
 
-  const handleAdd = () => {
+  const openModal = (type, appointment = null) => {
+    setModalType(type);
+    if (type === "Edit" && appointment) {
+      setEditId(appointment.id);
+      setFormData({
+        date: formatDate(appointment.date),
+        time: appointment.time || "",
+        doctor_name: appointment.doctor_name || "",
+        appointment_type: appointment.appointment_type || "",
+      });
+    } else {
+      setEditId(null);
+      setFormData({ date: "", time: "", doctor_name: "", appointment_type: "" });
+    }
+    setModalIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalIsOpen(false);
     setEditId(null);
     setFormData({ date: "", time: "", doctor_name: "", appointment_type: "" });
-    setShowForm(true);
   };
-
-//   const handleEdit = (appointment) => {
-//     setEditId(appointment.id);
-//     setFormData({
-//       date: appointment.date ? formatDate(appointment.date) : "", // Format current date
-//       time: appointment.time || "",
-//       doctor_name: appointment.doctor_name || "",
-//       appointment_type: appointment.appointment_type || "",
-//     });
-//     setShowForm(true);
-//   };
-
-// const handleEdit = async (appointment) => {
-//     try {
-//       const userId = localStorage.getItem("user_id");
-//       if (!userId) {
-//         console.error("Error: userId is not defined.");
-//         return;
-//       }
-  
-//       const response = await axios.put(
-//         `${apiUrl}/appointments/${appointment.id}`,
-//         {
-//           date: appointment.date,
-//           time: appointment.time,
-//           doctor_name: appointment.doctor_name,
-//           appointment_type: appointment.appointment_type,
-//         },
-//         { params: { userId } } // Pass userId as a query parameter
-//       );
-//
-//       setAppointments((prev) =>
-//         prev.map((appt) => (appt.id === appointment.id ? response.data : appt))
-//       );
-//     } catch (error) {
-//       console.error("Error editing appointment:", error.response?.data || error.message);
-//     }
-//   };
-
-  const handleEdit = (appointment) => {
-    const formattedDate = appointment.date
-      ? new Date(appointment.date).toISOString().split("T")[0]
-      : "";
-  
-    setEditId(appointment.id);
-    setFormData({
-      date: formattedDate,
-      time: appointment.time || "",
-      doctor_name: appointment.doctor_name || "",
-      appointment_type: appointment.appointment_type || "",
-    });
-    setShowForm(true);
-  };
-
 
   const handleDelete = async (id) => {
-    const userId = localStorage.getItem("user_id"); // Ensure this is correct
-  
     try {
-      const response = await axios.delete(`${apiUrl}/appointments`, {
-        params: { id, userId }, // Pass id and userId correctly
+      setLoadingDelete(true);
+      await axios.delete(`${apiUrl}/appointments`, {
+        params: { id, userId },
       });
-      console.log(response.data.message);
       setAppointments((prev) => prev.filter((appointment) => appointment.id !== id));
+      closeModal();
     } catch (error) {
       console.error("Error deleting appointment:", error);
+    } finally {
+      setLoadingDelete(false);
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     const payload = {
       date: formData.date,
       time: formData.time,
@@ -117,13 +99,13 @@ const AppointmentReminder = () => {
       appointment_type: formData.appointment_type,
       user_id: Number(userId),
     };
-  
+
     try {
       setLoadingSubmit(true);
-  
+
       if (editId) {
         // Edit appointment logic
-        const response = await axios.put(`${apiUrl}/appointments`, payload, {
+        await axios.put(`${apiUrl}/appointments`, payload, {
           params: { id: editId, userId },
         });
         setAppointments((prev) =>
@@ -131,19 +113,13 @@ const AppointmentReminder = () => {
             appointment.id === editId ? { ...appointment, ...payload } : appointment
           )
         );
-        console.log(response.data.message);
       } else {
         // Add appointment logic
-        const response = await axios.post(`${apiUrl}/appointments`, {
-          ...payload,
-          userId,
-        });
+        const response = await axios.post(`${apiUrl}/appointments`, payload);
         setAppointments((prev) => [...prev, response.data]);
       }
-  
-      setShowForm(false);
-      setFormData({ date: "", time: "", doctor_name: "", appointment_type: "" });
-      setEditId(null);
+
+      closeModal();
     } catch (error) {
       console.error("Error saving appointment:", error);
     } finally {
@@ -154,83 +130,105 @@ const AppointmentReminder = () => {
   return (
     <div className="appointment-reminder">
       <h2>Appointment Reminder</h2>
-      <button onClick={handleAdd} className="add-appointment-btn">
+      <button onClick={() => openModal("Add")} className="add-appointment-btn">
         + Add Appointment
       </button>
-      {loadingDelete && <p>Loading...</p>}
       <ul className="appointment-list">
         {appointments.length === 0 ? (
-          <p>No appointments available. Add one!</p>
+          <p>You don't have any upcoming appointments. Would you like to add one?</p>
         ) : (
           appointments.map((appointment) => (
             <li key={appointment.id} className="appointment-item">
-              <p><strong>{formatDate(appointment.date)}</strong></p>
+              <p>
+                <strong>{formatDate(appointment.date)}</strong>
+              </p>
               <p>{appointment.time}</p>
               <p>{appointment.doctor_name}</p>
               <p>{appointment.appointment_type}</p>
               <div className="appointment-actions">
-                <button onClick={() => handleEdit(appointment)}>Edit</button>
-                <button onClick={() => handleDelete(appointment.id)}>Delete</button>
+                <button onClick={() => openModal("Edit", appointment)}>Edit</button>
+                <button onClick={() => openModal("Delete", appointment)}>Delete</button>
               </div>
             </li>
           ))
         )}
       </ul>
-      {showForm && (
-        <form className="appointment-form" onSubmit={handleSubmit}>
-          <h3>{editId ? "Edit Appointment" : "Add Appointment"}</h3>
-          <label>
-            Date:
-            <input
-              type="date"
-              name="date"
-              value={formData.date || ""}
-              onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-              required
-            />
-          </label>
-          <label>
-            Time:
-            <input
-              type="time"
-              name="time"
-              value={formData.time || ""}
-              onChange={(e) => setFormData({ ...formData, time: e.target.value })}
-              required
-            />
-          </label>
-          <label>
-            Doctor:
-            <input
-              type="text"
-              name="doctor_name"
-              value={formData.doctor_name || ""}
-              onChange={(e) => setFormData({ ...formData, doctor_name: e.target.value })}
-              placeholder="Dr. Naturopath"
-              required
-            />
-          </label>
-          <label>
-            Appointment Type:
-            <input
-              type="text"
-              name="appointment_type"
-              value={formData.appointment_type || ""}
-              onChange={(e) => setFormData({ ...formData, appointment_type: e.target.value })}
-              placeholder="Follow-up Appointment"
-              required
-            />
-          </label>
-          <div className="form-actions">
-            <button type="button" onClick={() => setShowForm(false)}>
-              Cancel
-            </button>
-            <button type="submit" disabled={loadingSubmit}>
-              {loadingSubmit ? "Saving..." : "Save"}
-            </button>
+
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={closeModal}
+        contentLabel={`${modalType} Appointment`}
+        className="modal-content"
+        overlayClassName="modal-overlay"
+      >
+        {modalType === "Add" || modalType === "Edit" ? (
+          <form className="appointment-form" onSubmit={handleSubmit}>
+            <h3>{modalType === "Add" ? "Add Appointment" : "Edit Appointment"}</h3>
+            <label>
+              Date:
+              <input
+                type="date"
+                name="date"
+                value={formData.date || ""}
+                onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+                required
+              />
+            </label>
+            <label>
+              Time:
+              <input
+                type="time"
+                name="time"
+                value={formData.time || ""}
+                onChange={(e) => setFormData({ ...formData, time: e.target.value })}
+                required
+              />
+            </label>
+            <label>
+              Doctor:
+              <input
+                type="text"
+                name="doctor_name"
+                value={formData.doctor_name || ""}
+                onChange={(e) => setFormData({ ...formData, doctor_name: e.target.value })}
+                placeholder="Dr. Naturopath"
+                required
+              />
+            </label>
+            <label>
+              Appointment Type:
+              <input
+                type="text"
+                name="appointment_type"
+                value={formData.appointment_type || ""}
+                onChange={(e) =>
+                  setFormData({ ...formData, appointment_type: e.target.value })
+                }
+                placeholder="Follow-up Appointment"
+                required
+              />
+            </label>
+            <div className="form-actions">
+              <button type="button" onClick={closeModal}>
+                Cancel
+              </button>
+              <button type="submit" disabled={loadingSubmit}>
+                {loadingSubmit ? "Saving..." : "Save"}
+              </button>
+            </div>
+          </form>
+        ) : modalType === "Delete" ? (
+          <div>
+            <p>Are you sure you want to delete this appointment?</p>
+            <div className="modal-actions">
+              <button type="button" onClick={closeModal}>Cancel</button>
+              <button type="submit" onClick={() => handleDelete(editId)} disabled={loadingDelete}>
+                {loadingDelete ? "Deleting..." : "Delete"}
+              </button>
+            </div>
           </div>
-        </form>
-      )}
+        ) : null}
+      </Modal>
     </div>
   );
 };

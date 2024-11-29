@@ -239,7 +239,7 @@ Relationships:
 
 
 
-- think about how i would structure data eg. brainflix had a massive file in a get request, the get request already got so much so that you can filter down (ie. instead of having 3 GET requests just have 1)
+- think about how i would structure data eg. brainflix had a massive file in a get request, the get request already got so much so that you can filter down (ie. instead of having 3 GET requests just have 1) --> front-end
 - work from the most high level to most detailed pages
 - start with App.jsx then work down in specificity 
 - we want to create reuseable components instead of having all these separate complicated pages

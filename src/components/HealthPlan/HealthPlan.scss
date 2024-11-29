@@ -1,3 +1,94 @@
 @use "/src/styles/partials/variables" as *;
 @use "/src/styles/partials/mixins" as *;
 @use "/src/styles/partials/global" as *;
+
+.modal h3 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.modal form label {
+  display: block;
+  margin-bottom: 2px;
+  font-weight: bold;
+}
+
+.modal form input {
+  width: 98%;
+  padding: 10px;
+  padding-right: 0px;
+  margin-bottom: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.modal .form-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 5px;
+}
+
+.modal .form-actions button {
+  padding: 10px 10px;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.modal .form-actions button[type="submit"] {
+  background-color: cornflowerblue;
+  color: white;
+}
+
+.modal .form-actions button[type="button"] {
+  background-color: #ccc;
+}
+
+.modal-actions button[type="submit"] {
+  background-color: cornflowerblue;
+  color: white;
+}
+
+.modal-actions button[type="button"] {
+  background-color: #ccc;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black overlay */
+  display: flex;
+  justify-content: center; /* Center the modal horizontally */
+  align-items: center; /* Center the modal vertically */
+  z-index: 1000; /* Ensure the modal is above other elements */
+}
+
+/* Modal content styles */
+.modal {
+  background-color: #ffffff; /* Modal background color */
+  color: cornflowerblue;
+  border-radius: 8px;
+  padding: 20px;
+  width: 70%; /* Adjust the width for smaller screens */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Shadow for depth */
+  z-index: 1001; /* Ensure it's above the overlay */
+  animation: fadeIn 0.3s ease; /* Optional animation */
+}
+
+/* Optional fade-in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
