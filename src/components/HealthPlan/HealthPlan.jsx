@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import Modal from "react-modal";
 import axios from "axios";
-import './HealthPlan.scss';
+import "./HealthPlan.scss";
+import edit from "../../assets/edit.png";
+import del from "../../assets/delete.png";
 
 Modal.setAppElement("#root");
 
@@ -23,7 +25,9 @@ const HealthPlan = () => {
   useEffect(() => {
     const fetchHealthPlans = async () => {
       try {
-        const response = await axios.get(`${apiUrl}/health-plan?userId=${userId}`);
+        const response = await axios.get(
+          `${apiUrl}/health-plan?userId=${userId}`
+        );
         setHealthPlans(response.data);
       } catch (error) {
         console.error("Error fetching health plans:", error);
@@ -55,7 +59,7 @@ const HealthPlan = () => {
     setFormData({ task: "", amount: "", frequency: "" });
   };
 
-const handleDelete = async (id) => {
+  const handleDelete = async (id) => {
     try {
       setLoadingDelete(true);
       await axios.delete(`${apiUrl}/health-plan`, {
@@ -64,7 +68,10 @@ const handleDelete = async (id) => {
       setHealthPlans((prev) => prev.filter((plan) => plan.id !== id));
       closeModal();
     } catch (error) {
-      console.error("Error deleting health plan:", error.response?.data || error.message);
+      console.error(
+        "Error deleting health plan:",
+        error.response?.data || error.message
+      );
     } finally {
       setLoadingDelete(false);
     }
@@ -85,9 +92,13 @@ const handleDelete = async (id) => {
 
       if (editId) {
         // Edit
-        await axios.put(`${apiUrl}/health-plan`, payload, { params: { id: editId, userId } });
+        await axios.put(`${apiUrl}/health-plan`, payload, {
+          params: { id: editId, userId },
+        });
         setHealthPlans((prev) =>
-          prev.map((plan) => (plan.id === editId ? { ...plan, ...payload } : plan))
+          prev.map((plan) =>
+            plan.id === editId ? { ...plan, ...payload } : plan
+          )
         );
       } else {
         // Add
@@ -105,24 +116,38 @@ const handleDelete = async (id) => {
 
   return (
     <div className="health-plan">
-      <h2>Health Plan</h2>
-      <button onClick={() => openModal("Add")} className="add-plan-btn">
+      <h2 className="health-plan-header">Health Plan</h2>
+      <button onClick={() => openModal("Add")} className="health-plan-add-btn">
         + Add Task
       </button>
       <ul className="health-plan-list">
         {healthPlans.length === 0 ? (
-          <p>You don't have any tasks to complete. Would you like to add one?</p>
+          <p className="health-plan-none">
+            You don't have any tasks to complete. Would you like to add one?
+          </p>
         ) : (
           healthPlans.map((plan) => (
             <li key={plan.id} className="health-plan-item">
-              <p>
-                <strong>{plan.task}</strong>
-              </p>
-              <p>Amount: {plan.amount}</p>
-              <p>Frequency: {plan.frequency}</p>
+              <div className="appointment-details">
+                <p>
+                  <strong>{plan.task}</strong>
+                </p>
+                <p>Amount: {plan.amount}</p>
+                <p>Frequency: {plan.frequency}</p>
+              </div>
               <div className="health-plan-actions">
-                <button onClick={() => openModal("Edit", plan)}>Edit</button>
-                <button onClick={() => handleDelete(plan.id)}>Delete</button>
+                <img
+                  src={edit}
+                  alt="Edit"
+                  className="health-plan-icon"
+                  onClick={() => openModal("Edit", plan)}
+                />
+                <img
+                  src={del}
+                  alt="Delete"
+                  className="health-plan-icon"
+                  onClick={() => openModal("Delete", plan)}
+                />
               </div>
             </li>
           ))
@@ -138,14 +163,18 @@ const handleDelete = async (id) => {
       >
         {modalType === "Add" || modalType === "Edit" ? (
           <form className="health-plan-form" onSubmit={handleSubmit}>
-            <h3>{modalType === "Add" ? "Add Health Plan" : "Edit Health Plan"}</h3>
+            <h3>
+              {modalType === "Add" ? "Add Health Plan" : "Edit Health Plan"}
+            </h3>
             <label>
               Task:
               <input
                 type="text"
                 name="task"
                 value={formData.task || ""}
-                onChange={(e) => setFormData({ ...formData, task: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, task: e.target.value })
+                }
                 placeholder="E.g., Take Vitamin D"
                 required
               />
@@ -156,7 +185,9 @@ const handleDelete = async (id) => {
                 type="text"
                 name="amount"
                 value={formData.amount || ""}
-                onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, amount: e.target.value })
+                }
                 placeholder="E.g., 600IU"
                 required
               />
@@ -167,7 +198,9 @@ const handleDelete = async (id) => {
                 type="text"
                 name="frequency"
                 value={formData.frequency || ""}
-                onChange={(e) => setFormData({ ...formData, frequency: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, frequency: e.target.value })
+                }
                 placeholder="E.g., Daily"
                 required
               />
@@ -183,10 +216,14 @@ const handleDelete = async (id) => {
           </form>
         ) : modalType === "Delete" ? (
           <div>
-            <p>Are you sure you want to delete this health plan?</p>
-            <div className="modal-actions">
-              <button onClick={closeModal}>Cancel</button>
-              <button onClick={() => handleDelete(editId)} disabled={loadingDelete}>
+            <p>Are you sure you want to delete this task?</p>
+            <div className="form-actions">
+              <button type="button" onClick={closeModal}>Cancel</button>
+              <button 
+                type="submit"
+                onClick={() => handleDelete(editId)}
+                disabled={loadingDelete}
+              >
                 {loadingDelete ? "Deleting..." : "Delete"}
               </button>
             </div>
