@@ -2,7 +2,7 @@
 
 ## Overview
 
-BerriWell is a user-friendly app designed for naturopathic patients with chronic diseases and gut health issues. It provides a centralized platform to track practitioner notes, health plans, medications/vitamins, lab results, food sensitivities, appointments, and daily or weekly symptoms. By streamlining health management, BerriWell empowers users to stay organized, reduce stress, and take control of their wellness journey.
+BerriWell is a user-friendly app designed for naturopathic patients with chronic diseases and gut health issues. It provides a centralized platform to track health plans, medications/vitamins, food sensitivities, appointments, and daily or weekly pain symptoms. By streamlining health management, BerriWell empowers users to stay organized, reduce stress, and take control of their wellness journey.
 
 
 ### Problem Space
@@ -16,9 +16,9 @@ BerriWell aims to change this by centralizing data, lab results, and naturopathi
 ### User Profile
 
 **Naturopathic patients:**
-- with gut issues
+- with gut issues and food sensitivities
 - who want to keep their health data in one place
-- who want to track their data over time
+- who want to track their symptoms over time
 
 **Naturopaths** *(future implementation)*:
 - to create health plans for patients
@@ -26,10 +26,10 @@ BerriWell aims to change this by centralizing data, lab results, and naturopathi
 
 ### Features
 
-- **Food Sensitivity Results:** Easily add, edit, and view your food sensitivities at your convenience.
-- **Symptom Journal:** Log any pain or unfavorable symptoms you experience in a journal to share with your doctor during appointments.
 - **Appointment Reminder:** Keep track of your upcoming appointments to stay organized.
-- **Health Plan:** Add, edit, and view a personalized health plan tailored to your needs.
+- **Health Plan:** Add, edit, and view your personalized health plan tailored to your needs.
+- **Food Sensitivity Results:** Easily edit your food sensitivities results at your convenience. This feature is based off of LifeLab's Food Sensitity Lab Test that tracks your sensitivities to over 220+ different foods.
+- **Symptom Journal:** Log any pain or unfavorable symptoms you experience in a journal to share with your doctor during appointments.
 
 ## Implementation
 
@@ -56,10 +56,9 @@ I'm not planning on using any external APIs but will be uploading my own data to
 
 ### Sitemap
 
-- homepage --> appointment reminder and health plan
-- symptom journal page
-- food insensitivity page
-- user page (possibly)
+1. HomePage (appointment reminder and health plan)
+2. Food Sensitivity Page
+3. Symptom Journal Page
 
 
 ### Mockups
@@ -68,117 +67,40 @@ I'm not planning on using any external APIs but will be uploading my own data to
 
 ### Data
 
-1. food sensitivity results
-- categories: vegetables, fruit, meats, dairy/egg, grains, grains (gluten-free), fish/seafood, herbs/spices, nuts/seeds/legumes (each category has a set amount of foods i will manually type out at a later point. there are 120+ foods in the list)
-
-2. symptom journal
-- pain scale, date, time, symptoms, notes
-
-3. health plan
-- list of tasks/vitamins to take (user will input the list)
-
-Relationships:
-- Each user can have multiple symptom journal entries, food sensitivities, and a health plan: this is a one-to-many relationship between Users and Symptom_Journal and between Users and Food_Sensitivities.
-- Each user has one health plan: this is a one-to-one relationship between Users and Health_Plan.
-
 ![data diagram](/assets/images/data_diagram.png)
 
 ### Endpoints
 
-**GET /users/:id/food-sensitivities**
-- Fetch all food sensitivities for a user, grouped by category.
-```
-{
-  "vegetables": [
-    {
-      "id": 1,
-      "food_name": "Broccoli",
-      "sensitivity_level": "Moderate",
-    }
-  ],
-  "fruits": [
-    {
-      "id": 2,
-      "food_name": "Apple",
-      "sensitivity_level": "Mild",
-    }
-  ]
-}
-```
 
-**POST /users/:id/food-sensitivities**
-- Add a new food sensitivity result.
-```
-{
-  "category": "vegetables",
-  "food_name": "Broccoli",
-  "sensitivity_level": "Moderate",
-}
-```
-
-**PUT /users/:id/food-sensitivities/food_name**
-- Update an existing food sensitivity result.
-```
-{
-  "sensitivity_level": "Mild",
-}
-```
-
-**GET /users/:id/journals**
-- Fetch all symptom journals for a user.
-```
-[
-  {
-    "id": 1,
-    "date": "2024-11-01",
-    "time": "08:00",
-    "pain_scale": 5,
-    "symptoms": ["Stomach pain", "Fatigue"],
-    "notes": "Moderate stomach pain after eating oatmeal for breakfast."
-  }
-]
-```
-
-**POST /users/:id/journals**
-- Add a new symptom journal entry.
-```
-[
-  {
-    "id": 1,
-    "date": "2024-11-01",
-    "time": "18:00",
-    "pain_scale": 7,
-    "symptoms": ["Stomach pain", "Fatigue"],
-    "notes": "Severe stomach pain after eating a cheeseburger for dinner."
-  }
-]
-```
-
-**GET /users/:id/health-plan**
-- Fetch the user’s health plan.
+**GET /users/:id**
+- Fetch details for a specific user.
 ```
 {
   "id": 1,
-  "tasks": ["Take vitamin D", "Drink 2 liters of water", "Avoid processed sugar"],
-  "last_updated": "2024-11-01T00:00:00Z"
+  "name": "Jane Doe",
+  "email": "jane.doe@example.com",
+  "created_at": "2024-11-01T12:00:00Z",
+  "updated_at": "2024-11-01T12:00:00Z"
 }
+```
+**GET /appointments**
+Sample request: GET /appointments?userId=1
+```
+[
+  {
+    "id": 1,
+    "user_id": 1,
+    "date": "2024-11-10",
+    "time": "10:00",
+    "doctor_name": "Dr. Smith",
+    "appointment_type": "Checkup"
+  }
+]
 ```
 
-**POST /users/:id/health-plan**
-- Create a new health plan for a user.
-```
-{
-  "tasks": ["Take omega-3 supplements", "Drink herbal tea daily"]
-}
-```
 
-**PUT /users/:id/health-plan**
-- Update the user’s health plan.
-```
-{
-  "tasks": ["Increase fiber intake", "Add daily probiotics"]
-}
-```
+
+
 
 ### Roadmap
 
@@ -237,18 +159,6 @@ Relationships:
 - hormone balancing tab
 - react native implementation for iOS and Andriod users
 
+## Installation Instructions
 
-
-- think about how i would structure data eg. brainflix had a massive file in a get request, the get request already got so much so that you can filter down (ie. instead of having 3 GET requests just have 1) --> front-end
-- work from the most high level to most detailed pages
-- start with App.jsx then work down in specificity 
-- we want to create reuseable components instead of having all these separate complicated pages
-- url parameter determines what we're going to see --> not necessarily creating a separate url/get request for each
-- when loading a user's profile, we should be able to see everything 
-- eg. patient 1: kv pair name, id, food lists, journal entries, health plan, appointment reminders. /response/data/food-list/food-name
-- conditional rendering vs having a ton of pages
-- hone in on the user profile
-- try to group together endpoints 
-- single source of truth
-
-- add install packages instructions
+- 

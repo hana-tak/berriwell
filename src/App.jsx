@@ -11,10 +11,8 @@ import MenuBar from "./components/MenuBar/MenuBar";
 
 const App = () => {
   useEffect(() => {
-    const defaultUserId = '1';
-    if (!localStorage.getItem('user_id')) {
-      localStorage.setItem('user_id', defaultUserId);
-    }
+    const defaultUserId = '1'; // change to '2' or '3' to see alternate patient data, change to '4' to see a blank/new user profile
+    localStorage.setItem('user_id', defaultUserId);
   }, []);
 
   return (

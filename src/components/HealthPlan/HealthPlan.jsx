@@ -123,7 +123,7 @@ const HealthPlan = () => {
       <ul className="health-plan-list">
         {healthPlans.length === 0 ? (
           <p className="health-plan-none">
-            You don't have any tasks to complete. Would you like to add one?
+            You don't have any tasks in your health plan. Would you like to add one?
           </p>
         ) : (
           healthPlans.map((plan) => (
