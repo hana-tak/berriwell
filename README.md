@@ -99,7 +99,7 @@ Sample request: GET /appointments?userId=1
 ```
 
 
-
+- rewrite the rest of my endpoints (do later)
 
 
 ### Roadmap
