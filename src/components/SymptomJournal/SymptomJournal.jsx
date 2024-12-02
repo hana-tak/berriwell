@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import Modal from "react-modal";
 import axios from "axios";
-import './SymptomJournal.scss';
+import "./SymptomJournal.scss";
+import edit from "../../assets/edit.png";
+import del from "../../assets/delete.png";
 
 Modal.setAppElement("#root");
 
@@ -20,6 +22,20 @@ const SymptomJournal = () => {
   const [viewEntry, setViewEntry] = useState(null);
   const [deleteId, setDeleteId] = useState(null);
   const [loadingDelete, setLoadingDelete] = useState(false);
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toISOString().split("T")[0];
+  };
+
+  const formatAppointmentDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  };
 
   useEffect(() => {
     const fetchEntries = async () => {
@@ -41,19 +57,18 @@ const SymptomJournal = () => {
     if (type === "View" && entry) {
       setViewEntry(entry);
     } else if (type === "Edit" && entry) {
-      const formattedDate = new Date(entry.date).toISOString().split("T")[0];
       setFormData({
-        date: formattedDate,
-        pain_scale: entry.pain_scale,//.toString(),
+        date: formatDate(entry.date),
+        pain_scale: entry.pain_scale,
         symptoms: entry.symptoms.join(", "),
         notes: entry.notes || "",
       });
       setViewEntry(entry);
     } else if (type === "Delete" && entry) {
-        setDeleteId(entry.id)
+      setDeleteId(entry.id);
     } else if (type === "Add") {
       setFormData({
-        date: new Date().toISOString().split("T")[0],
+        date: formatDate(new Date()),
         pain: "",
         symptoms: "",
         notes: "",
@@ -115,37 +130,46 @@ const SymptomJournal = () => {
       setLoadingDelete(false);
     }
   };
-  
+
   return (
     <div className="symptom-journal">
-      <h2>Symptom Journal</h2>
-      <button onClick={() => openModal("Add")}>+ Add Entry</button>
+      <h2 className="symptom-journal-header">Symptom Journal</h2>
+      <button
+        onClick={() => openModal("Add")}
+        className="symptom-journal-add-btn"
+      >
+        + Add Entry
+      </button>
       <ul>
-        {entries.map((entry) => (
-          <li key={entry.id} onClick={() => openModal("View", entry)}>
-            <p>{entry.date}</p>
-            <p>Pain: {entry.pain_scale}</p>
-            <p>Symptoms: {entry.symptoms.join(", ")}</p>
-            <div className="entry-actions">
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  openModal("Edit", entry);
-                }}
-              >
-                Edit
-              </button>
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  openModal("Delete", entry);
-                }}
-              >
-                Delete
-              </button>
-            </div>
-          </li>
-        ))}
+        {entries.length === 0 ? (
+          <p className="symptom-journal-none">
+            You don't have any recent symptoms. Would you like to add one?
+          </p>
+        ) : (
+          entries.map((entry) => (
+            <li key={entry.id} className="symptom-journal-item" onClick={() => openModal("View", entry)}>
+              <div className="symptom-journal-details">
+              <p className="symptom-journal-date">{formatAppointmentDate(entry.date)}</p>
+                <p>Pain: {entry.pain_scale}</p>
+                <p>Symptoms: {entry.symptoms.join(", ")}</p>
+              </div>
+              <div className="symptom-journal-actions">
+                <img
+                  src={edit}
+                  alt="Edit"
+                  className="symptom-journal-icon"
+                  onClick={() => openModal("Edit", entry)}
+                />
+                <img
+                  src={del}
+                  alt="Delete"
+                  className="symptom-journal-icon"
+                  onClick={() => openModal("Delete", entry)}
+                />
+              </div>
+            </li>
+          ))
+        )}
       </ul>
 
       <Modal

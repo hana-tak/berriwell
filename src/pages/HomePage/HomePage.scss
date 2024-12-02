@@ -1,3 +1,8 @@
 @use "/src/styles/partials/variables" as *;
 @use "/src/styles/partials/mixins" as *;
 @use "/src/styles/partials/global" as *;
+
+.home-page {
+    padding-bottom: 70px;
+    box-sizing: border-box;
+  }

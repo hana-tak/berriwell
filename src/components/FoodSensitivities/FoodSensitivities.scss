@@ -2,46 +2,115 @@
 @use "/src/styles/partials/mixins" as *;
 @use "/src/styles/partials/global" as *;
 
-// .chip {
-//   display: inline-block;
-//   padding: 10px 15px;
-//   margin: 5px;
-//   border-radius: 20px;
-//   cursor: pointer;
-// }
+.food-sensitivities {
+  margin: 20px 10px;
+}
 
-// .unassigned {
-//   background-color: gray;
-//   color: white;
-// }
+.food-sensitivities h3 {
+  font-size: 1.15rem;
+  font-weight: $space-semi-bold;
+  font-family: $space;
+}
 
-// .normal {
-//   background-color: limegreen;
-//   color: white;
-// }
+.food-sensitivities h4 {
+  font-size: 1rem;
+  text-align: center;
+  font-weight: $space-semi-bold;
+  font-family: $space;
+  margin-bottom: 0.75rem;
+}
 
-// .borderline {
-//   background-color: gold;
-//   color: black;
-// }
+.food-sensitivities-header {
+  font-size: 1.6rem;
+  font-weight: $space-semi-bold;
+  font-family: $space;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 1rem 0;
+  padding-left: 0.75rem;
+}
 
-// .elevated {
-//   background-color: crimson;
-//   color: white;
-// }
+.food-sensitivities-category {
+  font-size: 1.3rem;
+  font-weight: $space-semi-bold;
+  font-family: $space;
+}
 
-// .edit-modal {
-//   position: fixed;
-//   top: 50%;
-//   left: 50%;
-//   transform: translate(-50%, -50%);
-//   background: white;
-//   padding: 20px;
-//   border-radius: 8px;
-//   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-// }
+.food-sensitivities-chip {
+  display: inline-block;
+  padding: 5px 10px;
+  margin: 5px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 0.75rem;
+  font-weight: $space-normal;
+  font-family: $space;
+}
 
-// .severity-options {
-//   display: flex;
-//   gap: 10px;
-// }
+.unassigned {
+  background-color: gray;
+  color: white;
+  font-size: 0.75rem;
+  font-weight: $space-normal;
+  font-family: $space;
+}
+
+.normal {
+  background-color: limegreen;
+  color: white;
+  font-size: 0.75rem;
+  font-weight: $space-normal;
+  font-family: $space;
+}
+
+.borderline {
+  background-color: gold;
+  color: black;
+  font-size: 0.75rem;
+  font-weight: $space-normal;
+  font-family: $space;
+}
+
+.elevated {
+  background-color: crimson;
+  color: white;
+  font-size: 0.75rem;
+  font-weight: $space-normal;
+  font-family: $space;
+}
+
+.edit-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  border: 3px solid $cloud-color;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.severity-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  justify-content: center;
+}
+
+.edit-modal button {
+  padding: 10px 10px;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 10px;
+  font-size: 0.8rem;
+  font-weight: $space-normal;
+  font-family: $space;
+  background-color: $cloud-color;
+}

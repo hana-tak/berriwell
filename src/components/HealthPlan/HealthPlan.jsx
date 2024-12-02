@@ -128,7 +128,7 @@ const HealthPlan = () => {
         ) : (
           healthPlans.map((plan) => (
             <li key={plan.id} className="health-plan-item">
-              <div className="appointment-details">
+              <div className="health-plan-details">
                 <p>
                   <strong>{plan.task}</strong>
                 </p>

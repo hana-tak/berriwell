@@ -49,18 +49,18 @@ const FoodSensitivities = () => {
 
   return (
     <div className="food-sensitivities">
-      <h2>Food Sensitivities</h2>
-      <div className="categories">
+      <h2 className="food-sensitivities-header">Food Sensitivities</h2>
+      <div className="food-sensitivities-categories">
         {Array.from(new Set(sensitivities.map((f) => f.category))).map((category) => (
-          <div key={category} className="category">
+          <div key={category} className="food-sensitivities-category">
             <h3>{category}</h3>
-            <div className="chips">
+            <div className="food-sensitivities-chip">
               {sensitivities
                 .filter((food) => food.category === category)
                 .map((food) => (
                   <div
                     key={food.id}
-                    className={`chip ${food.severity}`}
+                    className={`food-sensitivities-chip ${food.severity}`}
                     onClick={() => handleEdit(food)}
                   >
                     {food.food_name}
@@ -73,12 +73,12 @@ const FoodSensitivities = () => {
 
       {editMode && currentEdit && (
         <div className="edit-modal">
-          <h3>Edit Severity for {currentEdit.food_name}</h3>
+          <h4>Edit Severity for {currentEdit.food_name}</h4>
           <div className="severity-options">
             {["unassigned", "normal", "borderline", "elevated"].map((severity) => (
               <div
                 key={severity}
-                className={`chip ${severity}`}
+                className={`food-sensitivities-chip ${severity}`}
                 onClick={() => handleUpdate(currentEdit.id, severity)}
               >
                 {severity.charAt(0).toUpperCase() + severity.slice(1)}

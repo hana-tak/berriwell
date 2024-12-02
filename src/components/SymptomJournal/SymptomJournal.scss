@@ -1,3 +1,195 @@
 @use "/src/styles/partials/variables" as *;
 @use "/src/styles/partials/mixins" as *;
 @use "/src/styles/partials/global" as *;
+
+.symptom-journal {
+  margin: 20px 10px;
+}
+
+.symptom-journal-header {
+  font-size: 1.6rem;
+  font-weight: $space-semi-bold;
+  font-family: $space;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 1rem 0;
+  padding-left: 0.75rem;
+}
+
+.symptom-journal-item {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 15px;
+  border: 1px solid $cloud-color;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 15px;
+  font-weight: $space-normal;
+  font-family: $space;
+  font-size: 0.75rem;
+}
+
+.symptom-journal-add-btn {
+  background-color: $blueberry-color;
+  font-weight: $space-normal;
+  font-family: $space;
+  color: white;
+  border: none;
+  padding: 0.5rem;
+  border-radius: 5px;
+  cursor: pointer;
+  display: block;
+  margin: 0 auto;
+  margin-bottom: 1rem;
+}
+
+.symptom-journal-add-btn button:hover {
+  background-color: cornflowerblue;
+}
+
+.symptom-journal-none {
+  font-size: 1rem;
+  font-weight: $space-normal;
+  font-family: $space;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 1.25rem 0;
+  padding-left: 0.75rem;
+}
+
+.symptom-journal-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  cursor: pointer;
+}
+
+.symptom-journal-date {
+  font-weight: $space-semi-bold;
+  font-size: 0.8rem;
+}
+
+.symptom-journal-details {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.symptom-journal-actions {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-end;
+  gap: 0.5rem;
+  padding-left: 3rem;
+}
+
+.modal h3 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  text-align: center;
+  font-size: 1.25rem;
+  font-weight: $space-bold;
+  font-family: $space;
+}
+
+.modal form label {
+  display: block;
+  margin-bottom: 2px;
+  font-weight: bold;
+  font-size: 0.85rem;
+  font-weight: $space-normal;
+  font-family: $space;
+}
+
+.modal form input {
+  width: 98%;
+  padding: 10px;
+  padding-right: 0px;
+  margin-bottom: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: $space-normal;
+  font-family: $space;
+}
+
+.modal p {
+  font-size: 0.9rem;
+  font-weight: $space-normal;
+  font-family: $space;
+}
+
+.modal .form-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 5px;
+}
+
+.modal .form-actions button {
+  padding: 10px 10px;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 10px;
+  font-size: 0.8rem;
+  font-weight: $space-normal;
+  font-family: $space;
+}
+
+.modal .form-actions button[type="submit"] {
+  background-color: $blueberry-color;
+  color: white;
+}
+
+.modal .form-actions button[type="button"] {
+  background-color: $cloud-color;
+}
+
+.modal-actions button[type="submit"] {
+  background-color: $blueberry-color;
+  color: white;
+}
+
+.modal-actions button[type="button"] {
+  background-color: $cloud-color;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal {
+  background-color: $white-color;
+  color: $blueberry-color;
+  border-radius: 8px;
+  padding: 20px;
+  width: 70%;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  z-index: 1001;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

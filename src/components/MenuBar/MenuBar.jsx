@@ -1,6 +1,9 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import "./MenuBar.scss";
+import home from "../../assets/home.png";
+import stomach from "../../assets/stomach.png";
+import journal from "../../assets/journal.png";
 
 const MenuBar = () => {
   return (
@@ -11,7 +14,7 @@ const MenuBar = () => {
             to="/"
             className={({ isActive }) => (isActive ? "active-link" : "")}
           >
-            Home
+            <img src={home} alt="Home" />
           </NavLink>
         </li>
         <li>
@@ -19,7 +22,7 @@ const MenuBar = () => {
             to="/food-insensitivities"
             className={({ isActive }) => (isActive ? "active-link" : "")}
           >
-            Food Insensitivities
+            <img src={stomach} alt="Food Sensitivities"/>
           </NavLink>
         </li>
         <li>
@@ -27,7 +30,7 @@ const MenuBar = () => {
             to="/symptom-journal"
             className={({ isActive }) => (isActive ? "active-link" : "")}
           >
-            Symptom Journal
+            <img src={journal} alt="Symptom Journal"/>
           </NavLink>
         </li>
       </ul>
