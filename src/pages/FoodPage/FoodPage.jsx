@@ -1,11 +1,11 @@
 import React from "react";
-import FoodInsensitivities from "../../components/FoodInsensitivities/FoodInsensitivities";
+import FoodSensitivities from "../../components/FoodSensitivities/FoodSensitivities";
 import "./FoodPage.scss"
 
 const FoodPage = () => {
   return (
     <div className="food-page">
-      <FoodInsensitivities />
+      <FoodSensitivities />
     </div>
   );
 };

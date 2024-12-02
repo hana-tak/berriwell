@@ -250,3 +250,5 @@ Relationships:
 - hone in on the user profile
 - try to group together endpoints 
 - single source of truth
+
+- add install packages instructions

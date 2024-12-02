@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./Header.scss";
+import blueberries from "../../assets/blueberries.png";
 
 const Header = () => {
   const userId = localStorage.getItem("user_id");
@@ -22,6 +23,7 @@ const Header = () => {
 
   return (
     <header className="header">
+    <img src= {blueberries} alt="blueberries icon" />
       <h1>Hello, {userName || "User"}!</h1>
     </header>
   );

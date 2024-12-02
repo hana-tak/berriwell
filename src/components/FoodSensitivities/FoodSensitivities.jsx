@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import './FoodInsensitivities.scss';
+import './FoodSensitivities.scss';
 
 const FoodSensitivities = () => {
   const apiUrl = import.meta.env.VITE_API_URL;

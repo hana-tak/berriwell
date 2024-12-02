@@ -3,68 +3,106 @@
 @use "/src/styles/partials/global" as *;
 
 .appointment-reminder {
-  background-color: cornflowerblue;
-}
-.appointment-actions {
-  gap: 0.5rem;
+  margin: 20px 10px;
 }
 
-.appointment-actions button {
-  background-color: cornflowerblue;
+.appointment-header {
+  font-size: 1.6rem;
+  font-weight: $space-semi-bold;
+  font-family: $space;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 1rem 0;
+  padding-left: 0.75rem;
+}
+
+.appointment-item {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 15px;
+  border: 1px solid $cloud-color;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 15px;
+  font-weight: $space-normal;
+  font-family: $space;
+  font-size: 0.75rem;
+}
+
+.appointment-add-btn {
+  background-color: $blueberry-color;
+  font-weight: $space-normal;
+  font-family: $space;
   color: white;
   border: none;
   padding: 0.5rem;
   border-radius: 5px;
   cursor: pointer;
+  display: block;
+  margin: 0 auto;
+  margin-bottom: 1rem;
 }
 
-.appointment-actions button:hover {
+.appointment-add-btn button:hover {
   background-color: cornflowerblue;
 }
 
-.appointment-actions button:nth-child(2) {
-  background-color: mediumpurple;
+.appointment-none {
+  font-size: 1rem;
+  font-weight: $space-normal;
+  font-family: $space;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 1.25rem 0;
+  padding-left: 0.75rem;
 }
 
-.appointment-actions button:nth-child(2):hover {
-  background-color: mediumpurple;
+.appointment-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  cursor: pointer;
 }
 
-// .modal-overlay {
-//   position: fixed;
-//   top: 0;
-//   left: 0;
-//   right: 0;
-//   bottom: 0;
-//   background-color: rgba(0, 0, 0, 0.75); // Dark background with transparency
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-//   z-index: 1000; // Make sure it's above other elements
-// }
+.appointment-datetime {
+  font-weight: $space-semi-bold;
+  font-size: 0.8rem;
+}
 
-// .modal-content {
-//   background-color: #ffffff;
-//   border-radius: 8px;
-//   padding: 20px;
-//   width: 90%;
-//   max-width: 500px;
-//   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-//   animation: fadeIn 0.3s ease-in-out;
-//   z-index: 1001; // Ensure it's above the overlay
-//   position: relative;
-// }
+.appointment-details {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.appointment-actions {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-end;
+  gap: 0.5rem;
+  padding-left: 3rem;
+}
 
 .modal-content h3 {
   font-size: 1.5rem;
   margin-bottom: 10px;
   text-align: center;
+  font-size: 1.25rem;
+  font-weight: $space-bold;
+  font-family: $space;
 }
 
 .modal-content form label {
   display: block;
   margin-bottom: 2px;
   font-weight: bold;
+  font-size: 0.85rem;
+  font-weight: $space-normal;
+  font-family: $space;
 }
 
 .modal-content form input {
@@ -74,7 +112,16 @@
   margin-bottom: 5px;
   border: 1px solid #ccc;
   border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: $space-normal;
+  font-family: $space;
 }
+
+.modal-content p {
+    font-size: 0.9rem;
+    font-weight: $space-normal;
+    font-family: $space;
+  }
 
 .modal-content .form-actions {
   display: flex;
@@ -89,64 +136,53 @@
   font-size: 1rem;
   cursor: pointer;
   margin-top: 10px;
+  font-size: 0.8rem;
+  font-weight: $space-normal;
+  font-family: $space;
 }
 
 .modal-content .form-actions button[type="submit"] {
-  background-color: cornflowerblue;
+  background-color: $blueberry-color;
   color: white;
 }
 
 .modal-content .form-actions button[type="button"] {
-  background-color: #ccc;
+  background-color: $cloud-color;
 }
 
 .modal-actions button[type="submit"] {
-  background-color: cornflowerblue;
+  background-color: $blueberry-color;
   color: white;
 }
 
 .modal-actions button[type="button"] {
-  background-color: #ccc;
+  background-color: $cloud-color;
 }
 
-// @keyframes fadeIn {
-//   from {
-//     opacity: 0;
-//     transform: scale(0.95);
-//   }
-//   to {
-//     opacity: 1;
-//     transform: scale(1);
-//   }
-// }
-
-/* Overlay styles */
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black overlay */
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
-  justify-content: center; /* Center the modal horizontally */
-  align-items: center; /* Center the modal vertically */
-  z-index: 1000; /* Ensure the modal is above other elements */
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
 }
 
-/* Modal content styles */
 .modal-content {
-  background-color: #ffffff; /* Modal background color */
-  color: cornflowerblue;
+  background-color: $white-color;
+  color: $blueberry-color;
   border-radius: 8px;
   padding: 20px;
-  width: 70%; /* Adjust the width for smaller screens */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Shadow for depth */
-  z-index: 1001; /* Ensure it's above the overlay */
-  animation: fadeIn 0.3s ease; /* Optional animation */
+  width: 70%;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  z-index: 1001;
+  animation: fadeIn 0.3s ease;
 }
 
-/* Optional fade-in animation */
 @keyframes fadeIn {
   from {
     opacity: 0;

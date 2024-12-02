@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import Modal from "react-modal";
 import axios from "axios";
-import "./AppointmentReminder.scss"
+import "./AppointmentReminder.scss";
+import edit from "../../assets/edit.png";
+import del from "../../assets/delete.png";
 
 Modal.setAppElement("#root");
 
@@ -26,6 +28,33 @@ const AppointmentReminder = () => {
     return date.toISOString().split("T")[0];
   };
 
+  const formatAppointmentDate = (dateString, timeString) => {
+    const date = new Date(dateString);
+    const formattedDate = date.toLocaleString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+
+    const [hours, minutes] = timeString.split(":");
+    let formattedTime = "";
+    let ampm = "am";
+
+    let hour = parseInt(hours);
+    if (hour >= 12) {
+      ampm = "pm";
+      if (hour > 12) {
+        hour -= 12;
+      }
+    }
+    if (hour === 0) {
+      hour = 12;
+    }
+    formattedTime = `${hour}:${minutes}${ampm}`;
+
+    return `${formattedDate} @ ${formattedTime}`;
+  };
+
   useEffect(() => {
     if (modalIsOpen) {
       document.body.classList.add("modal-open");
@@ -41,7 +70,9 @@ const AppointmentReminder = () => {
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
-        const response = await axios.get(`${apiUrl}/appointments?userId=${userId}`);
+        const response = await axios.get(
+          `${apiUrl}/appointments?userId=${userId}`
+        );
         setAppointments(response.data);
       } catch (error) {
         console.error("Error fetching appointments:", error);
@@ -53,7 +84,9 @@ const AppointmentReminder = () => {
 
   const openModal = (type, appointment = null) => {
     setModalType(type);
-    if (type === "Edit" && appointment) {
+    if (type === "Delete" && appointment) {
+      setEditId(appointment.id);
+    } else if (type === "Edit" && appointment) {
       setEditId(appointment.id);
       setFormData({
         date: formatDate(appointment.date),
@@ -63,7 +96,12 @@ const AppointmentReminder = () => {
       });
     } else {
       setEditId(null);
-      setFormData({ date: "", time: "", doctor_name: "", appointment_type: "" });
+      setFormData({
+        date: "",
+        time: "",
+        doctor_name: "",
+        appointment_type: "",
+      });
     }
     setModalIsOpen(true);
   };
@@ -75,12 +113,15 @@ const AppointmentReminder = () => {
   };
 
   const handleDelete = async (id) => {
+    console.log("Deleting with params:", { userId, id });
     try {
       setLoadingDelete(true);
       await axios.delete(`${apiUrl}/appointments`, {
         params: { id, userId },
       });
-      setAppointments((prev) => prev.filter((appointment) => appointment.id !== id));
+      setAppointments((prev) =>
+        prev.filter((appointment) => appointment.id !== id)
+      );
       closeModal();
     } catch (error) {
       console.error("Error deleting appointment:", error);
@@ -104,17 +145,19 @@ const AppointmentReminder = () => {
       setLoadingSubmit(true);
 
       if (editId) {
-        // Edit appointment logic
+        // Edit
         await axios.put(`${apiUrl}/appointments`, payload, {
           params: { id: editId, userId },
         });
         setAppointments((prev) =>
           prev.map((appointment) =>
-            appointment.id === editId ? { ...appointment, ...payload } : appointment
+            appointment.id === editId
+              ? { ...appointment, ...payload }
+              : appointment
           )
         );
       } else {
-        // Add appointment logic
+        // Add
         const response = await axios.post(`${apiUrl}/appointments`, payload);
         setAppointments((prev) => [...prev, response.data]);
       }
@@ -129,25 +172,40 @@ const AppointmentReminder = () => {
 
   return (
     <div className="appointment-reminder">
-      <h2>Appointment Reminder</h2>
-      <button onClick={() => openModal("Add")} className="add-appointment-btn">
+      <h2 className="appointment-header">Appointment Reminder</h2>
+      <button onClick={() => openModal("Add")} className="appointment-add-btn">
         + Add Appointment
       </button>
       <ul className="appointment-list">
         {appointments.length === 0 ? (
-          <p>You don't have any upcoming appointments. Would you like to add one?</p>
+          <p className="appointment-none">
+            You don't have any upcoming appointments. Would you like to add one?
+          </p>
         ) : (
           appointments.map((appointment) => (
             <li key={appointment.id} className="appointment-item">
-              <p>
-                <strong>{formatDate(appointment.date)}</strong>
-              </p>
-              <p>{appointment.time}</p>
-              <p>{appointment.doctor_name}</p>
-              <p>{appointment.appointment_type}</p>
+              <div className="appointment-details">
+                <p className="appointment-datetime">
+                  {formatAppointmentDate(appointment.date, appointment.time)}
+                </p>
+                <p className="appointment-doctor">{appointment.doctor_name}</p>
+                <p className="appointment-type">
+                  {appointment.appointment_type}
+                </p>
+              </div>
               <div className="appointment-actions">
-                <button onClick={() => openModal("Edit", appointment)}>Edit</button>
-                <button onClick={() => openModal("Delete", appointment)}>Delete</button>
+                <img
+                  src={edit}
+                  alt="Edit"
+                  className="appointment-icon"
+                  onClick={() => openModal("Edit", appointment)}
+                />
+                <img
+                  src={del}
+                  alt="Delete"
+                  className="appointment-icon"
+                  onClick={() => openModal("Delete", appointment)}
+                />
               </div>
             </li>
           ))
@@ -163,14 +221,18 @@ const AppointmentReminder = () => {
       >
         {modalType === "Add" || modalType === "Edit" ? (
           <form className="appointment-form" onSubmit={handleSubmit}>
-            <h3>{modalType === "Add" ? "Add Appointment" : "Edit Appointment"}</h3>
+            <h3>
+              {modalType === "Add" ? "Add Appointment" : "Edit Appointment"}
+            </h3>
             <label>
               Date:
               <input
                 type="date"
                 name="date"
                 value={formData.date || ""}
-                onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, date: e.target.value })
+                }
                 required
               />
             </label>
@@ -180,7 +242,9 @@ const AppointmentReminder = () => {
                 type="time"
                 name="time"
                 value={formData.time || ""}
-                onChange={(e) => setFormData({ ...formData, time: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, time: e.target.value })
+                }
                 required
               />
             </label>
@@ -190,7 +254,9 @@ const AppointmentReminder = () => {
                 type="text"
                 name="doctor_name"
                 value={formData.doctor_name || ""}
-                onChange={(e) => setFormData({ ...formData, doctor_name: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, doctor_name: e.target.value })
+                }
                 placeholder="Dr. Naturopath"
                 required
               />
@@ -220,9 +286,15 @@ const AppointmentReminder = () => {
         ) : modalType === "Delete" ? (
           <div>
             <p>Are you sure you want to delete this appointment?</p>
-            <div className="modal-actions">
-              <button type="button" onClick={closeModal}>Cancel</button>
-              <button type="submit" onClick={() => handleDelete(editId)} disabled={loadingDelete}>
+            <div className="form-actions">
+              <button type="button" onClick={closeModal}>
+                Cancel
+              </button>
+              <button
+                type="submit"
+                onClick={() => handleDelete(editId)}
+                disabled={loadingDelete}
+              >
                 {loadingDelete ? "Deleting..." : "Delete"}
               </button>
             </div>
