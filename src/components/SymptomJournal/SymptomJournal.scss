@@ -117,25 +117,52 @@
   font-family: $space;
 }
 
+.modal form textarea {
+    width: 98%;
+    padding: .625rem;
+    padding-right: 0rem;
+    margin-bottom: .3125rem;
+    border: .0625rem solid #ccc;
+    border-radius: .25rem;
+    font-size: 0.75rem;
+    font-weight: $space-normal;
+    font-family: $space;
+  }
+
 .modal p {
   font-size: 0.9rem;
   font-weight: $space-normal;
   font-family: $space;
+  color: $black-color;
+  padding: .3125rem;
+}
+
+.modal button {
+    padding: .625rem .625rem;
+    border: none;
+    border-radius: .25rem;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-top: .625rem;
+    font-size: 0.8rem;
+    font-weight: $space-normal;
+    font-family: $space;
+    background-color: $cloud-color;
 }
 
 .modal .form-actions {
   display: flex;
   justify-content: space-between;
-  gap: 5px;
+  gap: .3125rem;
 }
 
 .modal .form-actions button {
-  padding: 10px 10px;
+  padding: .625rem .625rem;
   border: none;
-  border-radius: 4px;
+  border-radius: .25rem;
   font-size: 1rem;
   cursor: pointer;
-  margin-top: 10px;
+  margin-top: .625rem;
   font-size: 0.8rem;
   font-weight: $space-normal;
   font-family: $space;
@@ -175,10 +202,10 @@
 .modal {
   background-color: $white-color;
   color: $blueberry-color;
-  border-radius: 8px;
-  padding: 20px;
+  border-radius: .5rem;
+  padding: 1.25rem;
   width: 70%;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 .25rem .375rem rgba(0, 0, 0, 0.2);
   z-index: 1001;
   animation: fadeIn 0.3s ease;
 }

@@ -146,7 +146,9 @@ const SymptomJournal = () => {
             You don't have any recent symptoms. Would you like to add one?
           </p>
         ) : (
-          entries.map((entry) => (
+            [...entries]
+            .sort((a, b) => new Date(b.date) - new Date(a.date))
+            .map((entry) => (
             <li key={entry.id} className="symptom-journal-item" onClick={() => openModal("View", entry)}>
               <div className="symptom-journal-details">
               <p className="symptom-journal-date">{formatAppointmentDate(entry.date)}</p>
@@ -158,13 +160,19 @@ const SymptomJournal = () => {
                   src={edit}
                   alt="Edit"
                   className="symptom-journal-icon"
-                  onClick={() => openModal("Edit", entry)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    openModal("Edit", entry);
+                  }}
                 />
                 <img
                   src={del}
                   alt="Delete"
                   className="symptom-journal-icon"
-                  onClick={() => openModal("Delete", entry)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    openModal("Delete", entry);
+                  }}
                 />
               </div>
             </li>
@@ -182,10 +190,10 @@ const SymptomJournal = () => {
         {modalType === "View" && viewEntry ? (
           <div>
             <h3>View Entry</h3>
-            <p>Date: {viewEntry.date}</p>
-            <p>Pain: {viewEntry.pain_scale}</p>
-            <p>Symptoms: {viewEntry.symptoms.join(", ")}</p>
-            <p>Notes: {viewEntry.notes || "No notes"}</p>
+            <p><strong>Date:</strong> {formatAppointmentDate(viewEntry.date)}</p>
+            <p><strong>Pain:</strong> {viewEntry.pain_scale}</p>
+            <p><strong>Symptoms:</strong> {viewEntry.symptoms.join(", ")}</p>
+            <p><strong>Notes:</strong> {viewEntry.notes || "No notes"}</p>
             <button onClick={closeModal}>Close</button>
           </div>
         ) : modalType === "Delete" ? (
@@ -194,7 +202,7 @@ const SymptomJournal = () => {
             <p>Are you sure you want to delete this entry?</p>
             <div className="form-actions">
               <button onClick={closeModal}>Cancel</button>
-              <button onClick={handleDelete} disabled={loadingDelete}>
+              <button type="submit" onClick={handleDelete} disabled={loadingDelete}>
                 {loadingDelete ? "Deleting..." : "Delete"}
               </button>
             </div>
