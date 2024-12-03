@@ -29,7 +29,7 @@ BerriWell aims to change this by centralizing data, lab results, and naturopathi
 - **Appointment Reminder:** Keep track of your upcoming appointments to stay organized.
 - **Health Plan:** Add, edit, and view your personalized health plan tailored to your needs.
 - **Food Sensitivity Results:** Easily edit your food sensitivities results at your convenience. This feature is based off of LifeLab's Food Sensitity Lab Test that tracks your sensitivities to over 220+ different foods.
-- **Symptom Journal:** Log any pain or unfavorable symptoms you experience in a journal to share with your doctor during appointments.
+- **Symptom Journal:** Log any pain or unfavorable symptoms you experience in a journal to share with your doctor during appointments. View your detailed notes on your symptom by clicking on your symptom and viewing the pop-up.
 
 ## Implementation
 
@@ -84,7 +84,11 @@ I'm not planning on using any external APIs but will be uploading my own data to
 }
 ```
 **GET /appointments**
-Sample request: GET /appointments?userId=1
+Sample request: 
+```
+GET /appointments?userId=1
+```
+Sample Response:
 ```
 [
   {
@@ -97,9 +101,238 @@ Sample request: GET /appointments?userId=1
   }
 ]
 ```
-
-
-- rewrite the rest of my endpoints (do later)
+**POST /appointments**
+Request Body:
+```
+{
+  "user_id": 1,
+  "date": "2024-11-20",
+  "time": "14:30",
+  "doctor_name": "Dr. Adams",
+  "appointment_type": "Consultation"
+}
+```
+Sample Response:
+```
+{
+  "id": 2,
+  "user_id": 1,
+  "date": "2024-11-20",
+  "time": "14:30",
+  "doctor_name": "Dr. Adams",
+  "appointment_type": "Consultation"
+}
+```
+**PUT /appointments**
+Request Body:
+```
+{
+  "date": "2024-11-22",
+  "time": "16:00",
+  "doctor_name": "Dr. Green",
+  "appointment_type": "Follow-up"
+}
+```
+Sample Response:
+```
+{
+  "message": "Appointment updated successfully"
+}
+```
+**DELETE /appointments**
+Sample request: 
+```
+DELETE /appointments?userId=1
+```
+Sample Response:
+```
+{
+  "message": "Appointment deleted successfully"
+}
+```
+**GET /health-plan**
+Sample request: 
+```
+GET /health-plan?userId=1
+```
+Sample Response:
+```
+[
+  {
+    "id": 1,
+    "user_id": 1,
+    "task": "Take vitamin D supplements",
+    "amount": "2000 IU",
+    "frequency": "Daily"
+  },
+  {
+    "id": 2,
+    "user_id": 1,
+    "task": "Drink 2 liters of water",
+    "amount": "2 liters",
+    "frequency": "Daily"
+  }
+]
+```
+**POST /health-plan**
+Request Body:
+```
+{
+  "user_id": 1,
+  "task": "Increase fiber intake",
+  "amount": "30 grams",
+  "frequency": "Daily"
+}
+```
+Sample Response:
+```
+{
+  "id": 3,
+  "task": "Increase fiber intake",
+  "amount": "30 grams",
+  "frequency": "Daily"
+}
+```
+**PUT /health-plan**
+Request Body:
+```
+{
+  "task": "Add daily probiotics",
+  "amount": "10 billion CFU",
+  "frequency": "Once per day"
+}
+```
+Sample Response:
+```
+{
+  "message": "Health plan updated successfully"
+}
+```
+**DELETE /health-plan**
+Sample request: 
+```
+DELETE /health-plan?id=1&userId=1
+```
+Sample Response:
+```
+{
+  "message": "Health plan deleted successfully."
+}
+```
+**GET /sensitivities**
+Sample request: 
+```
+GET /sensitivities?userId=1
+```
+Sample Response:
+```
+[
+  {
+    "id": 1,
+    "user_id": 1,
+    "food_name": "Broccoli",
+    "category": "Vegetables",
+    "severity": "Moderate"
+  },
+  {
+    "id": 2,
+    "user_id": 1,
+    "food_name": "Apple",
+    "category": "Fruits",
+    "severity": "Mild"
+  }
+]
+```
+**PUT /sensitivities/:id**
+Request Body:
+```
+{
+  "user_id": 1,
+  "id": 45,
+  "severity": "Severe"
+}
+```
+Sample Response:
+```
+{
+  "message": "Severity updated successfully."
+}
+```
+**GET /journals**
+Sample request: 
+```
+GET /journals?userId=1
+```
+Sample Response:
+```
+[
+  {
+    "id": 1,
+    "user_id": 1,
+    "date": "2024-11-15",
+    "pain_scale": 6,
+    "symptoms": ["Headache", "Fatigue"],
+    "notes": "Severe headache after consuming dairy."
+  },
+  {
+    "id": 2,
+    "user_id": 1,
+    "date": "2024-11-16",
+    "pain_scale": 4,
+    "symptoms": ["Stomach ache"],
+    "notes": "Mild discomfort after eating spicy food."
+  }
+]
+```
+**POST /journals**
+Request Body:
+```
+{
+  "user_id": 1,
+  "date": "2024-11-18",
+  "pain_scale": 7,
+  "symptoms": ["Stomach pain", "Bloating"],
+  "notes": "Severe bloating after a heavy meal."
+}
+```
+Sample Response:
+```
+{
+  "id": 3,
+  "user_id": 1,
+  "date": "2024-11-18",
+  "pain_scale": 7,
+  "symptoms": ["Stomach pain", "Bloating"],
+  "notes": "Severe bloating after a heavy meal."
+}
+```
+**PUT /journals**
+Request Body:
+```
+{
+  "date": "2024-11-19",
+  "pain_scale": 5,
+  "symptoms": ["Fatigue"],
+  "notes": "Mild fatigue after an intense workout."
+}
+```
+Sample Response:
+```
+{
+  "message": "Symptom journal updated successfully."
+}
+```
+**DELETE /journals**
+Sample request: 
+```
+DELETE /journals?id=1&userId=1
+```
+Sample Response:
+```
+{
+  "message": "Symptom journal entry deleted."
+}
+```
 
 
 ### Roadmap
@@ -109,7 +342,7 @@ Sample request: GET /appointments?userId=1
 - Set up Node.js and Express for the backend server.
 - Define JSON files for initial data storage: users.json, symptom_journals.json, food_sensitivities.json, health_plan.json.
 - Plan and outline data models for users, symptom journals, food sensitivities, and health plans.
-- Write sample data for testing.
+- Write sample data for testing (5 seed files).
 
 **Backend Development**
 - Implement GET /users/:id to fetch user profiles.
@@ -145,7 +378,6 @@ Sample request: GET /appointments?userId=1
 - Conduct user testing (optional) and gather feedback for final adjustments.
 - Prepare a presentation or summary for the final capstone submission.
 
-
 ---
 
 ## Future Implementations
@@ -161,4 +393,18 @@ Sample request: GET /appointments?userId=1
 
 ## Installation Instructions
 
-- 
+Front-end:
+```
+npm install  axios knex react react-dom react-modal react-router-dom sass
+npm run dev
+```
+Back-end:
+```
+npm install  cors dotenv express knex mysql2 node nodemon vite
+```
+Create a MySQL database called "berriwell"
+```
+knex migrate:latest
+knex seed:run
+node index.js
+```
