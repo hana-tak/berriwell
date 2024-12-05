@@ -6,7 +6,6 @@ import HomePage from "./pages/HomePage/HomePage";
 import FoodPage from "./pages/FoodPage/FoodPage";
 import JournalPage from "./pages/JournalPage/JournalPage";
 
-import Header from "./components/Header/Header";
 import MenuBar from "./components/MenuBar/MenuBar";
 
 const App = () => {
@@ -17,7 +16,6 @@ const App = () => {
 
   return (
     <Router>
-      <Header />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/food-insensitivities" element={<FoodPage />} />
